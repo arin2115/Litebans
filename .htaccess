@@ -1,0 +1,27 @@
+# Custom 404 Error Page
+ErrorDocument 404 /error/404.php
+
+# Prevent direct access to error directory (optional security measure)
+<Files "*.php">
+    # Allow access to specific error pages
+    <RequireAll>
+        Require all granted
+    </RequireAll>
+</Files>
+
+# Optional: Add some basic security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Optional: Prevent access to sensitive files
+<Files ~ "^\.">
+    Require all denied
+</Files>
+
+<Files ~ "(\.md|\.txt|\.log|\.bak|\.backup|\.conf|\.sql)$">
+    Require all denied
+</Files>
