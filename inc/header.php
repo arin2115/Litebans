@@ -68,6 +68,7 @@ $settings = $this->page->settings;
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link href="<?php echo $this->autoversion('inc/css/custom.css'); ?>" rel="stylesheet">
+    <script src="<?php echo $this->autoversion('inc/js/jquery.min.js'); ?>"></script>
     <script type="text/javascript">
         function withjQuery(f) {
             if (window.jQuery) f();
