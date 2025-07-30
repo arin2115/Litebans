@@ -417,9 +417,9 @@ class Page {
     function table_print_headers($headers) {
         echo "<thead><tr>";
         foreach ($headers as $header) {
-            echo "<th><div style=\"text-align: center;\">$header</div></th>";
+            echo "<th class=\"text-center\">$header</th>";
         }
-        echo "<tbody>";
+        echo "</tr></thead><tbody>";
     }
 
     function print_header($container_start = true, $title = null) {
@@ -427,24 +427,25 @@ class Page {
             $title = $this->title;
         }
         if ($container_start) {
-            echo '<div class="container">';
+            echo '<div class="main-container fade-in">';
         }
 
-        echo "<div class=\"row\"><div style=\"text-align: center;\" class=\"col-lg-12\"><h1 class=\"modal-header\">$title</h1></div></div>";
+        echo "<div class=\"content-card scale-in\"><div class=\"text-center mb-6\"><h1 class=\"welcome-title text-3xl\">$title</h1></div>";
         if ($container_start) {
-            echo '<div class="row"><div style="text-align: center;" class="col-lg-12">';
+            echo '<div class="text-center">';
         }
     }
 
     function print_check_form() {
         $table = $this->name;
         echo '
-         <div style="text-align: left;" class="row">
-             <div style="margin-left: 15px;">
-                 <form onsubmit="captureForm(event);" class="form-inline"><div class="form-group"><input type="text" class="form-control" id="user" placeholder="' . $this->t("page_check_user") . '"></div><button type="submit" class="btn btn-default" style="margin-left: 5px;">' . $this->t("page_check_submit") . '</button></form>
-             </div>
+         <div class="glass-form mb-6">
+             <form onsubmit="captureForm(event);" class="flex flex-col sm:flex-row gap-3 items-center">
+                 <input type="text" class="glass-input flex-1" id="user" placeholder="' . $this->t("page_check_user") . '">
+                 <button type="submit" class="glass-button glass-button-hover px-6 py-3 rounded-lg text-white font-medium">' . $this->t("page_check_submit") . '</button>
+             </form>
              <script type="text/javascript">function captureForm(b){var o=$("#output");o.removeClass("in");var x=setTimeout(function(){o.html("<br>")}, 150);$.ajax({type:"GET",url:"check.php?name="+$("#user").val()+"&table=' . $table . '"}).done(function(c){clearTimeout(x);o.html(c);o.addClass("in")});b.preventDefault();return false};</script>
-             <div id="output" class="success fade" data-alert="alert" style="margin-left: 15px;"><br></div>
+             <div id="output" class="mt-4 text-white/80 transition-all duration-300"><br></div>
          </div>
          ';
     }
@@ -473,20 +474,26 @@ class Page {
         $prev_active = ($cur > 1);
         $next_active = ($cur < $pages);
 
-        $prev_class = "litebans-" . ($prev_active ? "pager-active" : "pager-inactive");
-        $next_class = "litebans-" . ($next_active ? "pager-active" : "pager-inactive");
+        $prev_class = $prev_active ? "litebans-pager-active" : "litebans-pager-inactive";
+        $next_class = $next_active ? "litebans-pager-active" : "litebans-pager-inactive";
 
-        $pager_prev = "<div class=\"litebans-pager litebans-pager-left $prev_class\">«</div>";
+        echo '<div class="litebans-pager">';
+        
         if ($prev_active) {
-            $pager_prev = "<a href=\"$page?page={$prev}{$prevargs}\">$pager_prev</a>";
+            echo "<a href=\"$page?page={$prev}{$prevargs}\" class=\"$prev_class\">« Previous</a>";
+        } else {
+            echo "<span class=\"$prev_class\">« Previous</span>";
         }
-
-        $pager_next = "<div class=\"litebans-pager litebans-pager-right $next_class\">»</div>";
+        
+        echo "<span class=\"text-white/70\">" . $this->t("page_page") . " $cur/$pages</span>";
+        
         if ($next_active) {
-            $pager_next = "<a href=\"$page?page={$next}{$args}\">$pager_next</a>";
+            echo "<a href=\"$page?page={$next}{$args}\" class=\"$next_class\">Next »</a>";
+        } else {
+            echo "<span class=\"$next_class\">Next »</span>";
         }
-        $pager_count = '<div style=\"margin-top: 32px;\"><div style=\"text-align: center; font-size:15px;\">' . $this->t("page_page") . ' ' . $cur . '/' . $pages . '</div></div>';
-        echo "$pager_prev $pager_next $pager_count";
+        
+        echo '</div>';
     }
 
     function print_footer($container_end = true) {
@@ -500,11 +507,11 @@ class Page {
     }
 
     function table_begin() {
-        echo '<table class="table table-striped table-bordered table-condensed">';
+        echo '<div class="glass-table"><table class="w-full">';
     }
 
     function table_end($clicky = true) {
-        echo '</table>';
+        echo '</table></div>';
         if ($clicky) {
             echo "<script type=\"text/javascript\">withjQuery(function(){ $('tr').click(function(){var href=$(this).find('a').attr('href');if(href!==undefined)window.location=href;}).hover(function(){\$(this).toggleClass('hover');}); });</script>";
         }
